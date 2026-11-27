@@ -1,0 +1,2016 @@
+/*set yp for base canvas and background*/ 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+    /* Smooth scrolling between poem verses */
+  scroll-behavior: smooth; 
+}
+
+body {
+  width: 100%;
+  background-color: #ffffff; /* Fallback color matching your top sky blue */
+  color: #2c2a4a;
+  font-family: "EB Garamond", serif; 
+  overflow-x: hidden; /* Prevents horizontal scrollbars when smoke/clouds drift */
+}
+
+p { 
+  line-height: 1.6;
+  font-size: 1.39vw; 
+}
+
+.scroll-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  z-index: 1;
+  
+  
+  background-image:
+    url("brocade-tile.svg"),
+    linear-gradient(
+      180deg,
+      #37549C 0%,    /* Top Hero sky blue */
+      #2B90F4 6%,   /* Soft sky transition */
+      #FFFFFF 14%,  /* Warm cream (Corn & Orchid sections) */
+      #FFFFFF 38%,  /* Cream continues through Bản Lác */
+      #FFEAD1 48%,  /* Warm sunset peach glow */
+      rgba(116, 134, 189, 0.85) 58%,  /* Dusk indigo (Xôi Ngũ Sắc) */
+      #37549C 68%,   /* Deep evening blue (Campfire & Thổ Cẩm) */
+      #FFFFFF 82%,  /* Soft mist (Cao Phong Oranges) */
+      #FFFFFF 87%,  
+      #95C6F3 93%,  /* Sky blue returning */
+      rgba(74, 158, 242, 0.90) 100%   /* Closing blue horizon */
+    );
+
+  background-size: 160px 125px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+  background-position: top left, top center;
+  background-blend-mode: soft-light, normal;
+}
+
+.story-section {
+  position: relative;
+  width: 100%;
+  height: auto; /* Height will be determined by content */
+}
+
+.layer-motion {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none; /* Lets clicks pass right through smoke/clouds to the poem */
+  will-change: transform; /* Keeps animations silky smooth */
+}
+
+/* LAYER 3: Interactive Poem Text & Clickable Props */
+.layer-interactive {
+  position: relative;
+  z-index: 3;
+}
+
+/* =========================================
+   REUSABLE ENTRANCE & FLOATING KEYFRAMES
+   ========================================= */
+   
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes driftRight {
+  0%, 100% { transform: translateX(0px); }
+  50%      { transform: translateX(15px); }
+}
+
+@keyframes driftLeft {
+  0%, 100% { transform: translateX(0px); }
+  50%      { transform: translateX(-17px); }
+}
+
+@keyframes bannerBreathe {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Reusable entrance class, can be used later */
+.fade-enter {
+  animation: fadeInSoft 1.4s ease-out forwards;
+}
+
+/* =========================================
+   SECTION 1: HERO LAYOUT & MOTION
+   ========================================= */
+  .section-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+  padding-top: 9%;
+  }
+   
+.hero-author {
+  text-align: center;
+  padding-top: 3%;
+  color: #ffffff;
+  font-style: italic;
+  font-size: 1.67vw;
+  letter-spacing: 0.5px;
+}
+
+.hero-title {
+  display: block;
+  width: 75%; 
+  margin: 1% auto 0 auto;
+  z-index: 2;
+
+  animation: 
+    fadeInSoft 1.5s ease-out forwards,
+    bannerBreathe 7s ease-in-out 1.5s infinite;
+}
+
+.cloud {
+  opacity: 0;
+  z-index: 3;
+  width: 40%;
+}
+
+/* Left Clouds: Fade in + Drift Right */
+.cloud-tl {
+  top: 12%;
+  left: 7%;
+  width: 14%;
+  animation: 
+    fadeInSoft 1.6s ease-out 0.2s forwards,
+    driftRight 8s ease-in-out 1.8s infinite;
+}
+
+.cloud-bl {
+  bottom: 11%;
+  left: -1%;
+  width: 34%;
+  z-index: 1; 
+  animation: 
+    fadeInSoft 1.8s ease-out 0.4s forwards,
+    driftRight 10s ease-in-out 2.2s infinite;
+}
+
+/* Right Clouds: Fade in + Drift Left */
+.cloud-tr {
+  top: 7%;
+  right: 6%;
+  width: 18%;
+  animation: 
+    fadeInSoft 1.6s ease-out 0.3s forwards,
+    driftLeft 9s ease-in-out 1.9s infinite;
+}
+
+.cloud-br {
+  bottom: 10%;
+  right: -3%;
+  width: 30%;
+  animation: 
+    fadeInSoft 1.8s ease-out 0.5s forwards,
+    driftLeft 11s ease-in-out 2.3s infinite;
+}
+
+.line-one {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  text-align: center;
+  font-size: 1.67vw;
+  color: #ffffff;
+} 
+
+/* =========================================
+   SECTION 2.1: TAILOR THE POEM TEXT
+   ========================================= */
+.section-deothamtham {
+  position: relative;
+  width: 100%;
+  min-height: 55vh;
+  display: grid;
+  place-items: center;
+  padding-top: 8%;
+}
+
+.intro-transition-stage {
+  position: relative;
+  width: 100%;
+  min-height: 12vw;
+  display: grid;
+  place-items: center;
+}
+
+/* Beat 1: "chùm thơ / Nguyễn An Bình" */
+.author-intro-credit {
+  grid-area: 1 / 1;
+  text-align: center;
+  color: #FFFCF4;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(48, 41, 136, 0.25);
+}
+
+.author-label {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.67vw;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.author-name {
+  font-family: "Pinyon Script", "Ballet", cursive;
+  font-size: 3vw;
+  line-height: 1.15;
+  margin-top: 0.2vw;
+}
+
+/* Triggered on scroll: 0.8s fade in -> 1.6s hold -> 0.8s fade out (3.2s total) */
+.section-deothamtham.is-visible .author-intro-credit {
+  animation: authorHoldAndFade 3.2s ease-in-out forwards;
+}
+
+@keyframes authorHoldAndFade {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(2px);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px);
+    filter: blur(3px);
+  }
+}
+
+/* Beat 2: "Đường lên Tây Bắc đèo thăm thẳm" (Appears right after Beat 1 fades out) */
+.transition-verse {
+  grid-area: 1 / 1;
+  text-align: center;
+  padding-top: 0;
+  font-size: 1.94vw;
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 1.5s ease-out 3.3s, transform 1.5s ease-out 3.3s;
+}
+
+.verse-highlight {
+  position: relative;
+  display: inline-block;
+  color: #FFFCF4;
+  border-bottom: 1.5px dashed rgba(255, 255, 255, 0.7);
+  padding: 0 0.5em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.verse-highlight-label {
+  transition: opacity 0.2s ease;
+}
+
+.verse-highlight-curve {
+  position: absolute;
+  top: 50%;
+  left: 0.1em;
+  width: calc(100% + 0.2em);
+  height: 3em;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.96);
+  filter: drop-shadow(0 3px 12px rgba(48, 41, 136, 0.35));
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.verse-highlight-curve text {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  fill: currentColor;
+}
+
+.verse-highlight:hover {
+  border-bottom-color: transparent;
+}
+
+.verse-highlight:hover .verse-highlight-label {
+  opacity: 0;
+}
+
+.verse-highlight:hover .verse-highlight-curve {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.section-deothamtham.is-visible .transition-verse {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* =========================================
+   SECTION 2.1: MUSIC STAMP
+   ========================================= */
+.music-stamp {
+  position: absolute;
+  top: 17%;
+  right: 3%; 
+  width: 19%;
+  background: none;
+  border: none;
+  padding: 0;
+  rotate: 10deg;
+  cursor: pointer;
+  z-index: 2; 
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.music-stamp img {
+  width: 100%;
+  display: block;
+}
+
+.music-stamp:hover {
+  transform: scale(1.08) rotate(3deg);
+  filter: drop-shadow(0 6px 12px rgba(52, 140, 228, 0.35));
+}
+
+/* Floating ♪ note indicator */
+.music-note {
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  font-size: 1.33vw;
+  color: #ffffff;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+/* Active state when music is PLAYING */
+.music-stamp.is-playing {
+  animation: stampPulse 2s ease-in-out infinite;
+}
+
+.music-stamp.is-playing .music-note {
+  opacity: 1;
+  color: #fbcfe8;
+  animation: noteFloat 1.5s ease-in-out infinite;
+}
+
+@keyframes stampPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.06) rotate(-2deg); }
+}
+
+@keyframes noteFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* =========================================
+   SECTION 2.2: LETTER INTERACTION MULTI-STEPS
+   ========================================= */
+.blue-ribbon {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  width: 110%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.section-letter {
+  position: relative;
+  padding-top: 10%;
+  min-height: 198vh;
+  overflow: visible;
+}
+
+.section-letter .envelope-stage {
+  position: sticky;
+  top: 12vh;
+  z-index: 3;
+  width: 61.6%;
+  margin-top: 8%;
+}
+.envelope-stage {
+  position: relative;
+  width: 61.6%;
+  aspect-ratio: 16 / 10;
+  margin: 5% auto 0 auto;
+}
+
+.envelope-click-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Base style for envelope states */
+.env-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.env-front {
+  inset: auto auto 0 50%;
+  z-index: 3;
+  width: 67%;
+  height: auto;
+  display: block;
+  transform: translateX(-50%);
+}
+
+.env-back-closed {
+  inset: auto auto 0 50%;
+  z-index: 3;
+  width: 67%;
+  height: auto;
+  display: block;
+  transform: translateX(-50%) rotateY(-180deg);
+}
+
+
+/* --- STEP 0: Front visible --- */
+.env-front       { opacity: 1; transform: translateX(-50%) rotateY(0deg); z-index: 3; }
+.env-back-closed { opacity: 0; transform: translateX(-50%) rotateY(-180deg); z-index: 2; }
+.env-back-open   { opacity: 0; transform: scale(0.98); z-index: 2; }
+
+/* --- STEP 1: Flip to Back Closed --- */
+.envelope-stage[data-step="1"] .env-front {
+  opacity: 0;
+  transform: translateX(-50%) rotateY(180deg);
+}
+.envelope-stage[data-step="1"] .env-back-closed {
+  opacity: 1;
+  transform: translateX(-50%) rotateY(0deg);
+}
+
+/* --- STEP 2 to 5: Envelope Opens (Flap Up) --- */
+.envelope-stage[data-step="2"] .env-front,
+.envelope-stage[data-step="3"] .env-front,
+.envelope-stage[data-step="4"] .env-front,
+.envelope-stage[data-step="5"] .env-front,
+.envelope-stage[data-step="2"] .env-back-closed,
+.envelope-stage[data-step="3"] .env-back-closed,
+.envelope-stage[data-step="4"] .env-back-closed,
+.envelope-stage[data-step="5"] .env-back-closed {
+  opacity: 0;
+  transform: translateX(-50%) rotateY(0deg);
+}
+
+.envelope-stage[data-step="2"] .env-back-open,
+.envelope-stage[data-step="3"] .env-back-open,
+.envelope-stage[data-step="4"] .env-back-open,
+.envelope-stage[data-step="5"] .env-back-open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- PHOTO CARDS STACK (Steps 3, 4, 5) --- */
+.photo-card {
+  position: absolute;
+  top: 24%;
+  left: 14%;
+  width: 72%;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  filter: none;
+}
+
+/* Step 3: Card 1 (Lương Sơn) pops forward */
+.envelope-stage[data-step="3"] .card-1 {
+  opacity: 1;
+  transform: translateY(0) rotate(-2deg) scale(1);
+  z-index: 5;
+}
+
+/* Step 4: Card 1 fades back, Card 2 (Dốc Cun) pops forward */
+.envelope-stage[data-step="4"] .card-1 {
+  opacity: 0.35;
+  transform: translateY(-10px) rotate(-5deg) scale(0.94);
+  z-index: 4;
+}
+.envelope-stage[data-step="4"] .card-2 {
+  opacity: 1;
+  transform: translateY(0) rotate(1.5deg) scale(1);
+  z-index: 5;
+}
+
+/* Step 5: Card 2 fades back, Card 3 (Đèo Thung Khe) pops forward */
+.envelope-stage[data-step="5"] .card-2 {
+  opacity: 0.35;
+  transform: translateY(-10px) rotate(-4deg) scale(0.94);
+  z-index: 4;
+}
+.envelope-stage[data-step="5"] .card-3 {
+  opacity: 1;
+  transform: translateY(0) rotate(2deg) scale(1);
+  z-index: 5;
+}
+
+.envelope-stage[data-step="5"] .card-3 {
+  transform:
+    translateY(var(--card3-y, 0))
+    scale(var(--card3-scale, 1))
+    rotate(2deg);
+  filter: none;
+  transition: transform 0.15s linear;
+}
+
+/* --- STEP 6: GRAND TRANSITION! Card 3 Zooms, Turns Icy Blue & Blends into Next Section --- */
+.envelope-stage[data-step="6"] .env-back-open,
+.envelope-stage[data-step="6"] .card-1,
+.envelope-stage[data-step="6"] .card-2,
+.envelope-stage[data-step="6"] .music-stamp,
+.envelope-stage[data-step="6"] .click-hint {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.envelope-stage[data-step="6"] .card-3 {
+  opacity: 1;
+  z-index: 10;
+  transform: translateY(var(--card3-y, 55%)) scale(var(--card3-scale, 1.85)) rotate(0deg);
+  filter: none;
+  mix-blend-mode: normal;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 1.4s ease;
+}
+
+/* --- MATCHING POEM LINES BELOW ENVELOPE --- */
+.envelope-poems {
+  position: relative;
+  text-align: center;
+  margin-top: 6%;
+  min-height: 2rem;
+}
+
+.env-poem-line {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 20;
+  font-size: 1.67vw;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.envelope-stage[data-step="3"] .line-1,
+.envelope-stage[data-step="4"] .line-2,
+.envelope-stage[data-step="5"] .line-3 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.click-hint {
+  text-align: center;
+  margin-top: 2%;
+  font-size: 0.89vw;
+  color: #2B90F4;
+  letter-spacing: 0.5px;
+  animation: pulseHint 2s infinite;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+.section-corn {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.section-corn > img {
+  display: block;
+  width: min(76vw, 1101px);
+  height: auto;
+}
+
+.corn-postcard {
+  position: relative;
+  width: min(76vw, 1101px);
+}
+
+#section3-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* =========================================
+   SECTION 3.1: GRADIENT STRIPS ON TOP + IMAGE FADE
+   ========================================= */
+.section-corn {
+  overflow: visible;
+}
+
+/* Base image: stays in place for card-3 scroll target, fades out as strips run */
+#section3-image {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 2.2s ease-in-out 0.35s, transform 2.2s ease-out 0.35s;
+}
+
+/* Blue strip aligns with the pass-side overlays */
+.section-corn > img.blue-strip-run {
+  position: absolute;
+  top: 0%;
+  left: -10%;
+  width: 127%;
+  z-index: 3;
+  opacity: 0;
+  transform: translateX(-18%);
+  transition: opacity 1.3s ease-out, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Pass-side overlays use the same placement as the blue strip */
+.pass-side-wrap {
+  position: absolute;
+  top: 0%;
+  left: -11%;
+  width: 127%;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-out 0.25s, transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+
+/* Left Cloud + Branch: Slides in from left (-16%) */
+.pass-left-enter {
+  transform: translateX(-16%);
+}
+
+/* Right Cloud + Branch: Slides in from right (+16%) */
+.pass-right-enter {
+  transform: translateX(16%);
+}
+
+/* Active state when #corn scrolls into view */
+.section-corn.is-visible .pass-left-enter,
+.section-corn.is-visible .pass-right-enter {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Inner images keep floating continuously (reusing Hero driftRight & driftLeft!) */
+.pass-side-float-left {
+  width: 100%;
+  display: block;
+  animation: driftRight 8.5s ease-in-out 1.8s infinite;
+}
+
+.pass-side-float-right {
+  width: 100%;
+  display: block;
+  animation: driftLeft 9s ease-in-out 1.8s infinite;
+}
+
+/* 2. Pink Strips: overlays image and cascades downward */
+.section-corn > img.pink-strips-fall {
+  position: absolute;
+  top: 2%;
+  left: -2%;
+  width: 120%;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(-45px);
+  transition: opacity 1.4s ease-out 0.45s,
+              transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
+}
+
+/* Poem Line 
+   CURVED INTERACTIVE VERSE */ 
+.corn-verse-curve {
+  position: absolute;
+  top: 97%;
+  left: 43%;
+  transform: translateX(-50%) translateY(12px);
+  width: 44%;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.85s, transform 1.2s ease 0.85s;
+}
+
+/* Fades in when Section 3 scrolls into view */
+.section-corn.is-visible .corn-verse-curve {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.corn-curve-svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.corn-curve-text {
+  font-family: "EB Garamond", serif;
+  font-size: 2.22vw;
+  font-style: italic;
+  fill: #302988;
+  cursor: pointer;
+  transition: fill 0.4s ease, letter-spacing 0.5s ease, filter 0.4s ease;
+}
+
+/* Hover interaction: text glides slightly wider along the curve & glows soft pink-white */
+.corn-curve-text:hover {
+  fill: #302988;
+  letter-spacing: 1.5px;
+  filter: drop-shadow(0 3px 10px #2B90F4);
+}
+
+/* --- ACTIVE STATE WHEN SCROLLED INTO #corn --- */
+.section-corn.is-visible #section3-image {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+.section-corn.is-visible > img.blue-strip-run {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section-corn.is-visible > img.pink-strips-fall {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-corn.is-visible .corn-verse {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   SECTION 3.2: GRILLED CORN & FLOATING SMOKE
+   ========================================= */
+.corn-grill-scene {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  margin-top: 55%;
+}
+
+/* Keep the rack and draggable corn anchored to one responsive frame */
+.corn-grill-stage {
+  position: absolute;
+  top: calc(3% + 20px);
+  right: -3%;
+  width: 65%;
+  aspect-ratio: 1532 / 1086;
+  transition: top 1.5s ease-out 0.3s;
+}
+
+.corn-grill-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.5s ease-out 0.3s, filter 0.4s ease;
+}
+
+.section-corn.is-visible .corn-grill-stage {
+  top: 3%;
+  animation: cornGrillBreathe 8s ease-in-out 1.6s infinite;
+}
+
+@keyframes cornGrillBreathe {
+  0%, 100% { top: 3%; }
+  50% { top: calc(3% - 8px); }
+}
+
+.section-corn.is-visible .corn-grill-img {
+  opacity: 1;
+}
+
+
+/* 2. Left & Right Pink Smoke Wisps */
+.corn-smoke-left {
+  top: 5%;
+  left: -2%;
+  width: 40%;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 1.6s ease-out 0.5s;
+}
+
+.section-corn.is-visible .corn-smoke-left {
+  opacity: 1;
+  animation: driftRight 9s ease-in-out 1.2s infinite;
+}
+
+.corn-smoke-right {
+  bottom: -50%;
+  right: -10%;
+  width: 50%;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 1.6s ease-out 0.7s;
+}
+
+.section-corn.is-visible .corn-smoke-right {
+  opacity: 1;
+  animation: driftLeft 10s ease-in-out 1.4s infinite;
+}
+
+/* 3. Staggered Poem Stanza (Matches your Figma diagonal step layout) */
+.corn-stanza {
+  position: absolute;
+  bottom: 5%;
+  left: 12%;
+  width: 48%;
+  z-index: 4;
+}
+
+.corn-line-1,
+.corn-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.67vw;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* Line 1 fades in slowly first */
+.corn-line-1 {
+  transition: opacity 1.8s ease-out 0.9s, transform 1.8s ease-out 0.9s;
+}
+
+/* Line 2 indented to the right ("quán ven đường"), fades in 1.1s AFTER Line 1! */
+.corn-line-2 {
+  margin-left: 38%;
+  margin-top: 2%;
+  transition: opacity 1.8s ease-out 2.0s, transform 1.8s ease-out 2.0s;
+}
+
+.section-corn.is-visible .corn-line-1,
+.section-corn.is-visible .corn-line-2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* =========================================
+   SECTION 3.3: DRAGGABLE CORN EARS
+   ========================================= */
+.draggable-corn {
+  position: absolute;
+  z-index: 4; /* Sits above the grill (z-index: 2) and smoke (z-index: 3) */
+  cursor: grab;
+  user-select: none;
+  touch-action: none; /* Prevents page scroll while dragging on touch/trackpad */
+  opacity: 0;
+  transition: opacity 1.5s ease-out 0.45s, filter 0.25s ease;
+}
+
+.section-corn.is-visible .draggable-corn {
+  opacity: 1;
+}
+
+
+.draggable-corn.is-dragging {
+  cursor: grabbing;
+  z-index: 10;
+}
+
+/* Starting positions are relative to the grill's exported frame */
+.corn-1 { top: 28.8%; left: 15.4%; width: 49.2%; z-index: 5; }
+.corn-2 { top: 19.6%; left: 32.3%; width: 36.9%; z-index: 3; }
+.corn-3 { top: 2.3%; left: 49.2%; width: 38.5%; z-index: 3; }
+
+/* =========================================
+   SECTION 4: WILD ORCHID BRANCHES & VERSE
+   ========================================= */
+.section-orchid {
+  position: relative;
+  width: 100%;
+  min-height: 115vh;
+  margin-top: 30%;
+  overflow: visible;
+}
+
+/* 1. Top-Left Branch: Anchored at left edge (0% 25%) so it swings like a real branch */
+.branch-tl {
+  top: 4%;
+  left: -3%;
+  width: 44%;
+  transform-origin: 0% 25%;
+  animation: branchSwingLeft 7.5s ease-in-out infinite;
+}
+
+/* 2. Bottom-Right Branch: Anchored at right edge (100% 30%) so it pivots naturally */
+.branch-br {
+  top: 70%;
+  right: -1%;
+  width: 68%;
+  transform-origin: 100% 30%;
+  animation: branchSwingRight 8.5s ease-in-out infinite;
+  transition: filter 0.6s ease;
+}
+
+
+
+@keyframes branchSwingLeft {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(2.2deg); }
+}
+
+@keyframes branchSwingRight {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-2deg); }
+}
+
+@keyframes petalFloat {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50%      { transform: translateY(14px) translateX(-8px); }
+}
+
+.orchid-petals-stage {
+  position: absolute;
+  top: 30%;
+  left: 16%;
+  width: 60%;
+  aspect-ratio: 1452 / 1609;
+  z-index: 2;
+  animation: petalFloat 9s ease-in-out infinite;
+}
+
+.orchid-petal-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.92;
+  pointer-events: none;
+  transition: opacity 1.1s ease-out;
+}
+
+.orchid-petal-layer.is-faded {
+  opacity: 0;
+}
+
+/* Clickable Hit-Zones inside the 60% frame */
+.petal-hit {
+  position: absolute;
+  width: 8%;
+  height: 8%;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+}
+
+.petal-hit.is-used {
+  pointer-events: none;
+}
+
+/* Centers match the petal positions in the 1452 x 1609 export frame */
+.hit-1 { top: 2.9%;  left: 89.9%; }
+.hit-2 { top: 19%;   left: 95.9%; }
+.hit-3 { top: 47.8%; left: 63.4%; }
+.hit-4 { top: 38.3%; left: 21%; }
+.hit-5 { top: 51.3%; left: 12.7%; }
+.hit-6 { top: 77.6%; left: 2.1%; }
+.hit-7 { top: 96.5%; left: 28.2%; }
+
+/* 4. Middle Verse ("Phong lan ngóng núi không buồn nở") */
+.orchid-verse-mid {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%) translateY(14px);
+  width: 80%;
+  text-align: center;
+  font-family: "EB Garamond", serif;
+  font-size: 1.8vw;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transition: opacity 1.6s ease-out 0.3s, transform 1.6s ease-out 0.3s;
+}
+
+.section-orchid.is-visible .orchid-verse-mid {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* 5. Bottom Diagonal Stanza ("Mai xuôi theo người / nỗi nhớ thương?") */
+.orchid-stanza-bottom {
+  position: absolute;
+  bottom: -75%;
+  left: 16%;
+  width: 56%;
+  pointer-events: none;
+}
+
+.orchid-line-1,
+.orchid-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.8vw;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateY(14px);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.orchid-line-1 {
+  transition: opacity 1.7s ease-out 0.7s, transform 1.7s ease-out 0.7s;
+}
+
+.orchid-line-2 {
+  margin-left: 30%;
+  margin-top: 2%;
+  transition: opacity 1.7s ease-out 1.6s, transform 1.7s ease-out 1.6s;
+}
+
+.orchid-line-1.is-dispersing,
+.orchid-line-2.is-dispersing {
+  animation: orchidDustFade 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes orchidDustFade {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+    letter-spacing: 0;
+  }
+  35% {
+    opacity: 0.75;
+    filter: blur(1px);
+    transform: translate(2px, -6px) scale(1.03);
+    letter-spacing: 1.5px;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate(12px, -28px) scale(1.08);
+    letter-spacing: 5px;
+  }
+}
+
+.section-orchid.is-visible .orchid-line-1,
+.section-orchid.is-visible .orchid-line-2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   SECTION 5: BẢN LÁC VILLAGE (ONLY BLUE STRIPS MOVE & FLOAT)
+   ========================================= */
+.section-village {
+  position: relative;
+  width: 100%;
+  min-height: 115vh;
+  margin-top: 50%;
+  overflow: visible;
+}
+
+/* 1. Village Illustration: Stationary in its exact Figma spot */
+.village-houses-img {
+  display: block;
+  width: 118%;
+  margin: 0 auto;
+  left: -10%; 
+  padding-top: 50%;
+  z-index: 2;
+}
+
+/* 2. Left Blue Strip: Starts shifted left (-32%), moves in on scroll and locks at 0% */
+.village-left-scroll {
+  position: absolute;
+  top: 15%;
+  left: -20%;
+  width: 70%;
+  z-index: 3;
+  opacity: var(--village-progress, 0);
+  transform: translateX(calc((1 - var(--village-progress, 0)) * -32%));
+  will-change: transform, opacity;
+}
+
+/* 3. Right Blue Strip: Starts shifted right (+32%), moves in on scroll and locks at 0% */
+.village-right-scroll {
+  position: absolute;
+  top: 28%;
+  right: -25%;
+  width: 60%;
+  z-index: 3;
+  opacity: var(--village-progress, 0);
+  transform: translateX(calc((1 - var(--village-progress, 0)) * 32%));
+  will-change: transform, opacity;
+}
+
+.village-strip-wrap > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Interactive Smoke Clearing: Only the area around the cursor fades/dissolves away */
+.smoke-dispersable {
+  pointer-events: auto;
+  cursor: default;
+  --mx: -999px;
+  --my: -999px;
+  --clear-radius: 0px;
+}
+
+.smoke-dispersable img {
+  -webkit-mask-image: radial-gradient(
+    circle at var(--mx) var(--my),
+    transparent 0%,
+    transparent calc(var(--clear-radius) * 0.45),
+    rgba(0, 0, 0, 0.45) calc(var(--clear-radius) * 0.75),
+    #000 var(--clear-radius)
+  );
+  mask-image: radial-gradient(
+    circle at var(--mx) var(--my),
+    transparent 0%,
+    transparent calc(var(--clear-radius) * 0.45),
+    rgba(0, 0, 0, 0.45) calc(var(--clear-radius) * 0.75),
+    #000 var(--clear-radius)
+  );
+  transition: filter 1.3s ease-in-out;
+}
+
+.smoke-dispersable.is-hovering img {
+  filter: blur(1.5px);
+}
+
+/* 4. Poem Couple at Bottom */
+.village-stanza {
+  position: absolute;
+  bottom: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  text-align: center;
+  z-index: 4;
+}
+
+.village-line-1,
+.village-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.8vw;
+  font-style: italic;
+  line-height: 115%; 
+  color: #302988;
+  opacity: calc((var(--village-progress, 0) - 0.55) / 0.45);
+  transform: translateY(calc((1 - var(--village-progress, 0)) * 18px));
+}
+
+/* =========================================
+   SECTION 6: FIVE-COLOR STICKY RICE (XÔI NGŨ SẮC)
+   ========================================= */
+.section-xoi {
+  position: relative;
+  width: 100%;
+  min-height: 110vh;
+  margin-top: 14%;
+  overflow: visible;
+}
+
+/* 1. Pink Steam Ribbons: Slides in horizontally on scroll, then floats continuously */
+.xoi-steam-wrap {
+  top: 2%;
+  left: -25%;
+  width: 135%;
+  z-index: 2;
+  opacity: 0;
+  transform: translateX(-18%);
+  transition: opacity 1.5s ease-out, transform 2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-xoi.is-visible .xoi-steam-wrap {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.xoi-steam-img {
+  width: 100%;
+  display: block;
+  /* Reuses your Hero cloud drift! */
+  animation: driftRight 9s ease-in-out 1.8s infinite;
+}
+
+/* 2. Interactive 6-Frame Sticky Rice Basket */
+.xoi-stage {
+  position: relative;
+  width: 35%;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  padding-top: 100%;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.xoi-frame {
+  position: absolute;
+  bottom: -2%;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.frame-5 { 
+  bottom: -3.6%;
+   width: 99%;
+   left: 49%;
+}
+
+/* Active frame for each of the 6 steps (0 -> 5) */
+.xoi-stage[data-step="0"] .frame-0,
+.xoi-stage[data-step="1"] .frame-1,
+.xoi-stage[data-step="2"] .frame-2,
+.xoi-stage[data-step="3"] .frame-3,
+.xoi-stage[data-step="4"] .frame-4,
+.xoi-stage[data-step="5"] .frame-5 {
+  opacity: 1;
+}
+
+.xoi-hint {
+  position: absolute;
+  bottom: -3%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  white-space: nowrap;
+  color: #FFFCF4;
+}
+
+/* =========================================
+   SECTION 7: CAMPFIRE & MÚA XÒE DANCE
+   ========================================= */
+.section-campfire {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  margin-top: 18%;
+  overflow: visible;
+}
+
+/* 1. Curved Arch Text ("Mê gái Thái   múa xòe đêm hội") */
+.xoe-arch-wrap {
+  position: relative;
+  width: 68%;
+  margin: 0 auto;
+  padding-top: 4%;
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(14px) scale(0.94);
+  transition: opacity 1.3s ease-out, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-campfire.is-visible .xoe-arch-wrap {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.xoe-arch-svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.xoe-arch-text {
+  font-family: "EB Garamond", serif;
+  font-size: 1.94vw;
+  font-style: italic;
+  fill: #FFFCF4;
+  filter: drop-shadow(0 2px 8px rgba(48, 41, 136, 0.25));
+}
+
+/* 2. Floating Side Fabrics */
+.xoe-fan-left {
+  top: 16%;
+  left: -2%;
+  width: 28%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.6s ease-out 0.7s;
+}
+
+.section-campfire.is-visible .xoe-fan-left {
+  opacity: 1;
+  animation: driftRight 8.5s ease-in-out 1.2s infinite;
+}
+
+.xoe-cloth-right {
+  top: 20%;
+  right: -2%;
+  width: 30%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.6s ease-out 0.8s;
+}
+
+.section-campfire.is-visible .xoe-cloth-right {
+  opacity: 1;
+  animation: driftLeft 9s ease-in-out 1.3s infinite;
+}
+
+/*3. Three Thái Dancer Elements (Gradually appear in sequence after text fans out) */
+.thai-girls-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 1250;
+  margin-top: 6%;
+  z-index: 2;
+}
+
+.thai-girl-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(22px) scale(0.97);
+  pointer-events: none;
+}
+
+/* Staggered entrance delays: Element 1 (0.8s) -> Element 2 (1.35s) -> Element 3 (1.9s) */
+.girl-1 {
+  top: -38%; 
+  left: -45%;
+  width: 67%;
+  z-index: 1;
+  transition: opacity 1.7s ease-out 0.8s, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s;
+}
+
+.girl-2 {
+  left: 19%;
+  z-index: 2;
+  width: 58%; 
+  transition: opacity 1.7s ease-out 1.35s, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1) 1.35s;
+}
+
+.girl-3 {
+  right: -41%;
+  top: -5%;
+  width: 65%; 
+  left: auto;
+  z-index: 3;
+  transition: opacity 1.7s ease-out 1.9s, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1) 1.9s;
+}
+
+/* Active state when scrolled into view */
+.section-campfire.is-visible .girl-1 {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: bannerBreathe 8s ease-in-out 2.3s infinite;
+}
+
+.section-campfire.is-visible .girl-2 {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: bannerBreathe 8.5s ease-in-out 2.85s infinite;
+}
+
+.section-campfire.is-visible .girl-3 {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: bannerBreathe 9s ease-in-out 3.4s infinite;
+}
+
+/* 4. Campfire + Warm Glow on Hover */
+.campfire-wrap {
+  position: absolute;
+  bottom: -3%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36%;
+  z-index: 3;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1.7s ease-out 1.1s;
+}
+
+.section-campfire.is-visible .campfire-wrap {
+  opacity: 1;
+}
+
+.campfire-img {
+  width: 100%;
+  display: block;
+  animation: fireFlicker 3.2s ease-in-out infinite;
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+/* Hovering the fire warms it up with a rich golden-orange glow! */
+.campfire-wrap:hover .campfire-img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 28px rgba(251, 146, 60, 0.85))
+          drop-shadow(0 0 55px rgba(244, 63, 94, 0.5))
+          brightness(1.08);
+}
+
+@keyframes fireFlicker {
+  0%, 100% {
+    transform: scale(1) translateY(0px);
+    filter: drop-shadow(0 0 12px rgba(251, 146, 60, 0.35));
+  }
+  50% {
+    transform: scale(1.02) translateY(-3px);
+    filter: drop-shadow(0 0 20px rgba(251, 146, 60, 0.55));
+  }
+}
+
+/* 5. Bottom Couplet ("Bếp lửa hồng / đỏ rực mùa vui." — Appears together with the girl at 0.9s!) */
+.campfire-stanza {
+  position: absolute;
+  bottom: -12%;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  width: 80%;
+  text-align: center;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 1.9s ease-out 0.9s, transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.9s;
+}
+
+.section-campfire.is-visible .campfire-stanza {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.fire-line-1,
+.fire-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.67vw;
+  font-style: italic;
+  color: #FFFCF4;
+  text-shadow: 0 2px 10px rgba(48, 41, 136, 0.25);
+}
+
+.fire-line-2 {
+  font-size: 2.78vw;
+  line-height: 80%; 
+}
+
+/* Sweeping Green Ribbon behind the campfire & dancer */
+.xoe-green-ribbon {
+  top: 42%;
+  left: -12%;
+  width: 125%;
+  z-index: 1; /* Sits behind the campfire (z-index: 3) and dancer (z-index: 2) */
+  opacity: 0;
+  transform: translateX(-14%);
+  transition: opacity 1.6s ease-out 0.6s, transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
+}
+
+.section-campfire.is-visible .xoe-green-ribbon {
+  opacity: 1;
+  transform: translateX(0);
+  animation: driftRight 9.5s ease-in-out 2.4s infinite;
+}
+
+/* =========================================
+   SECTION 8: BROCADE FABRIC (ONLY TOP FABRIC SWAYS + BRISK TEXT)
+   ========================================= */
+.section-fabric {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  margin-top: 40%;
+  overflow: visible;
+}
+
+.fabric-rack-stage {
+  position: relative;
+  width: 56%;
+  margin-left: auto;
+  margin-right: 0;
+  padding-top: 4%;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+}
+
+.section-fabric.is-visible .fabric-rack-stage {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Base group: Wooden poles + front two cloths (stationary) */
+.fabric-base-img {
+  display: block;
+  right: -15%; 
+  width: 120%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ONLY the top magenta fabric sways gently in the wind */
+.fabric-top-img {
+  top: 32%;
+  left: 25%;
+  width: 70%;
+  z-index: 2;
+  transform-origin: 50% 0%;
+  animation: topClothSway 7s ease-in-out infinite;
+}
+
+@keyframes topClothSway {
+  0%, 100% { transform: rotate(0deg) skewX(0deg); }
+  50%      { transform: rotate(2.2deg) skewX(-1.4deg); }
+}
+
+/* Left Side Poem Stanza: Brisk ease-in entrance */
+.fabric-stanza {
+  position: absolute;
+  top: 38%;
+  left: 20%;
+  width: 34%;
+  z-index: 3;
+}
+
+.fabric-line-1,
+.fabric-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.9vw;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateX(-14px);
+}
+
+/* Staggered ease-in transitions (0.75s duration) */
+.fabric-line-1 {
+  transition: opacity 0.75s ease-in 0.35s, transform 0.75s ease-in 0.35s;
+}
+
+.fabric-line-2 {
+  margin-left: -6%;
+  margin-top: -2.5%;
+  transition: opacity 0.75s ease-in 0.6s, transform 0.75s ease-in 0.6s;
+}
+
+.section-fabric.is-visible .fabric-line-1,
+.section-fabric.is-visible .fabric-line-2 {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* =========================================
+   SECTION 9: CAO PHONG ORANGES (SANDWICHED BASKET LAYERS)
+   ========================================= */
+.section-orange {
+  position: relative;
+  width: 100%;
+  min-height: 105vh;
+  margin-top: 6%;
+  overflow: visible;
+}
+
+/* Shared coordinate frame for the branch, falling orange, and basket */
+.orange-tree-stage {
+  position: absolute;
+  top: 40%;
+  left: -20%;
+  width: 55%;
+  overflow: visible;
+  z-index: 2;
+  --basket-top: 100%;
+  --basket-left: 48%;
+  --orange-start-top: 65%;
+  --orange-start-left: calc(var(--basket-left) + 17%);
+  --orange-land-top: calc(var(--basket-top) + 5%);
+}
+
+.orange-branch-img {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  z-index: 2;
+  transform-origin: 0% 45%;
+  animation: branchSwingLeft 8s ease-in-out infinite;
+}
+
+.orange-fruit-motion {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0% 45%;
+  animation: branchSwingLeft 8s ease-in-out infinite;
+  transition: transform 0.22s ease-out;
+  z-index: 3;
+}
+
+.orange-fruit-motion.is-dropping {
+  animation: none;
+  transform: rotate(0deg);
+}
+
+/* 2. Drifting Leaves */
+.orange-leaves-img {
+  top: 60%;
+  left: 40%;
+  width: 15%;
+  z-index: 2;
+  animation: petalFloat 9s ease-in-out infinite;
+}
+
+/* 3. Clickable Orange (z-index: 3 sits IN FRONT of basket-back, BEHIND basket-front) */
+.clickable-orange {
+  position: absolute;
+  top: var(--orange-start-top);
+  left: var(--orange-start-left);
+  width: 7.3%;
+  z-index: 3;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+
+/* Natural ease-in-out drop right into the gap between basket-back & basket-front */
+.clickable-orange.is-fallen {
+  animation: orangeDropToBasket 1.15s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.clickable-orange.is-dropping {
+  pointer-events: none;
+}
+
+@keyframes orangeDropToBasket {
+  0% {
+    top: var(--orange-start-top);
+  }
+  18% {
+    top: var(--orange-start-top);
+  }
+  78% {
+    top: var(--orange-land-top);
+  }
+  90% {
+    top: calc(var(--orange-land-top) - 1%);
+  }
+  100% {
+    top: var(--orange-land-top);
+  }
+}
+
+/* 4. Combined Basket Box (Positioned relative to the branch stage) */
+.basket-box {
+  position: absolute;
+  top: var(--basket-top);
+  left: var(--basket-left);
+  bottom: auto;
+  width: 38%;
+  aspect-ratio: 1 / 1; /* Keeps both layers locked to the exact same box */
+  pointer-events: none;
+}
+
+.basket-piece {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Back piece sits BEHIND the falling orange (z-index: 2 < 3) */
+.basket-back {
+  z-index: 2;
+}
+
+/* Front woven piece sits IN FRONT of the falling orange (z-index: 4 > 3) */
+.basket-front {
+  z-index: 4;
+}
+
+/* Subtle catch bounce on the whole basket box when the orange lands */
+.basket-box.is-catching {
+  animation: basketCatch 0.45s ease-in-out;
+}
+
+@keyframes basketCatch {
+  0%, 100% { transform: translateY(0) scale(1); }
+  45%      { transform: translateY(5px) scale(1.03, 0.97); }
+}
+
+/* 5. Right-Side Poem Couplet */
+.orange-stanza {
+  position: absolute;
+  top: 80%;
+  right: 8%;
+  width: 30%;
+  text-align: center;
+  z-index: 3;
+}
+
+.orange-line-1,
+.orange-line-2 {
+  font-family: "EB Garamond", serif;
+  font-size: 1.8vw;
+  line-height: 115%;
+  font-style: italic;
+  color: #302988;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.orange-line-1 {
+  transition: opacity 1s ease-in-out 0.3s, transform 1s ease-in-out 0.3s;
+}
+
+.orange-line-2 {
+  margin-top: 0%;
+  transition: opacity 1s ease-in-out 0.65s, transform 1s ease-in-out 0.65s;
+}
+
+.section-orange.is-visible .orange-line-1,
+.section-orange.is-visible .orange-line-2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   SECTION 10: CLOSING CLOUDS, LETTER & HANDWRITTEN FINALE
+   ========================================= */
+.section-ending {
+  position: relative;
+  width: 100%;
+  min-height: 115vh;
+  margin-top: 40%;
+  overflow: visible;
+}
+
+/* 1. Left & Right Clouds: Scroll inward from outer edges to center, then lock & float */
+.ending-left-scroll {
+  top: 12%;
+  left: -2%;
+  width: 44%;
+  z-index: 2;
+  opacity: var(--ending-progress, 0);
+  transform: translateX(calc((1 - var(--ending-progress, 0)) * -35%));
+  will-change: transform, opacity;
+}
+
+.ending-cloud-float-left {
+  width: 100%;
+  display: block;
+  animation: driftRight 9s ease-in-out infinite;
+}
+
+.ending-right-scroll {
+  top: 2%;
+  right: -2%;
+  width: 38%;
+  z-index: 2;
+  opacity: var(--ending-progress, 0);
+  transform: translateX(calc((1 - var(--ending-progress, 0)) * 35%));
+  will-change: transform, opacity;
+}
+
+.ending-cloud-float-right {
+  width: 100%;
+  display: block;
+  animation: driftLeft 10s ease-in-out infinite;
+}
+
+/* 2. Open Envelope + Lined Letter Paper (Appears once clouds gather) */
+.ending-letter-stage {
+  position: relative;
+  width: 66%;
+  margin: 0 auto;
+  padding-top: 60%;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  transition: opacity 1.5s ease-out 0.3s, transform 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.section-ending.is-visible .ending-letter-stage {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.ending-envelope-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Green "Tây Bắc" Stamp on upper right corner of the letter */
+.ending-stamp-link {
+  position: absolute;
+  top: 63%;
+  right: -7%;
+  width: 18%;
+  z-index: 4;
+  display: block;
+  opacity: 0;
+  transform: rotate(7deg) scale(0.92);
+  pointer-events: none;
+  transition: opacity 1.2s ease-out 6.7s, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 6.7s;
+}
+
+.section-ending.is-visible .ending-stamp-link {
+  opacity: 1;
+  transform: rotate(10deg) scale(1);
+  pointer-events: auto;
+}
+
+.ending-stamp-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(3deg);
+  transition: transform 0.4s ease;
+}
+
+.ending-stamp-link:hover .ending-stamp-img {
+  transform: rotate(0deg) scale(1.06);
+}
+
+/* 3. Handwritten Script Lines on the Ruled Paper */
+.ending-script-lines {
+  position: absolute;
+  top: 77%; 
+  left: 53%;
+  transform: translateX(-50%) rotate(3deg);
+  width: 68%;
+  text-align: center;
+  z-index: 4;
+}
+
+.script-write-1,
+.script-write-2 {
+  font-family: "Pinyon Script", "Ballet", cursive;
+  font-size: 2.05vw;
+  line-height: 1.35;
+  color: #1e1b4b;
+  white-space: nowrap;
+  /* Starts hidden from right to left so it unveils like handwriting */
+  clip-path: inset(-20% 100% -20% 0);
+}
+
+/* Line 1 writes across first (1.2s -> 3.2s) */
+.section-ending.is-visible .script-write-1 {
+  animation: handwritingReveal 2s cubic-bezier(0.37, 0, 0.63, 1) 1.2s forwards;
+}
+
+/* Line 2 writes after Line 1 finishes (3.3s -> 5.5s) */
+.section-ending.is-visible .script-write-2 {
+  animation: handwritingReveal 2.2s cubic-bezier(0.37, 0, 0.63, 1) 3.3s forwards;
+}
+
+@keyframes handwritingReveal {
+  from { clip-path: inset(-20% 100% -20% 0); }
+  to   { clip-path: inset(-20% 0% -20% 0); }
+}
+
+/* 4. "- The end -" Calligraphic Finale (Appears after the 2 lines finish writing) */
+.the-end-wrap {
+  position: relative;
+  margin-top: -10%;
+  text-align: right;
+  right: 5%;
+  bottom: 35%; 
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1.7s ease-out 5.6s, transform 1.7s ease-out 5.6s;
+}
+
+.section-ending.is-visible .the-end-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.the-end-text {
+  font-family: "EB Garamond", serif;
+  font-size: 2.20vw;
+  color: #302988;
+  letter-spacing: 6px;
+}
+
+.the-end-script {
+  font-family: "Ballet", "Pinyon Script", cursive;
+  font-size: 17.78vw;
+  letter-spacing: 0;
+  vertical-align: middle;
+  color: #302988;
+  left: 50%; 
+  top: 20%; 
+  text-shadow: 0 4px 18px rgba(48, 41, 136, 0.18);
+}
+
+.pink-note-stage {
+  position: absolute;
+  bottom: 0%;
+  left: -10%;
+  width: 40%;
+  aspect-ratio: 1 / 1.15;
+  z-index: 4;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1.2s ease-out 5.6s, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 5.6s, filter 0.35s ease;
+}
+
+.section-ending.is-visible .pink-note-stage {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pink-note-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Default: Folded note visible */
+.note-folded {
+  opacity: 1;
+  transform-origin: bottom center;
+  transform: scaleY(1);
+}
+
+.note-open {
+  opacity: 0;
+  transform-origin: bottom center;
+  transform: scaleY(0.88);
+}
+
+/* Clicked State: Unfolds open */
+.pink-note-stage[data-open="true"] .note-folded {
+  opacity: 0;
+  transform: scaleY(1.06);
+}
+
+.pink-note-stage[data-open="true"] .note-open {
+  opacity: 1;
+  transform: scaleY(1);
+}
