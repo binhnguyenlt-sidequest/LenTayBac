@@ -1,0 +1,31 @@
+<svg width="1532" height="1086" viewBox="0 0 1532 1086" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M994.866 856.023C990.532 932.159 986.198 1008.3 981.888 1084.43L76.088 819.695C59.6766 747.892 43.2888 676.089 26.8774 604.31L994.866 856.023Z" fill="#FFFCF1"/>
+<path d="M994.866 856.023C990.532 932.159 986.198 1008.3 981.888 1084.43L76.088 819.695C59.6766 747.892 43.2888 676.089 26.8774 604.31L994.866 856.023Z" stroke-width="0.56836" stroke="black"/>
+<path d="M1506.15 212.378C1494.91 278.119 1483.66 343.859 1472.41 409.623C1308.91 634.552 1145.39 859.48 981.89 1084.43C986.2 1008.3 990.533 932.159 994.867 856.023L1506.15 212.378Z" fill="#FFF5CF" stroke-width="0.56836" stroke="black"/>
+<path d="M1506.15 212.378L994.866 856.022L26.8774 604.31C336.113 445.548 645.348 286.81 954.583 128.071C1138.42 156.158 1322.29 184.268 1506.15 212.378Z" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M945.207 130.344L1503.29 214.059L990.557 834.898L0 573.31L945.207 130.344Z" fill="#CDE9FF"/>
+<mask id="mask0_230_70" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="7" y="119" width="1504" height="693">
+<path d="M952.69 119.83L1510.77 201.982L998.041 811.287L7.48389 554.554L952.69 119.83Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_230_70)">
+<path d="M1530.83 233.976C1287.74 193.172 1044.65 152.345 801.579 111.542" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1486.36 266.254C1248.21 223.982 1010.09 181.71 771.951 139.438" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1452.54 309.473C1212.93 266.348 973.341 223.224 733.729 180.076" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1406.24 355.013L681.653 216.783" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1375.71 410.238L599.098 256.473" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1332.64 484.955L497.954 305.661" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1251.15 556.118L381.157 364.675" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1193.32 651.554C869.71 571.676 546.1 491.798 222.49 411.919" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1092.29 733.422C766.055 649.589 439.816 565.779 113.577 481.946" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1039.58 113.578C736.027 275.3 432.476 437.022 128.948 598.744" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1116.97 121.938C828.124 292.66 539.279 463.405 250.434 634.126" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1177.81 132.073C921.359 314.115 664.91 496.156 408.461 678.197" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1248.33 139.367C1012.77 338.98 777.208 538.569 541.646 738.181" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1358.55 152.322L708.295 752.084" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M1447.85 172.499L851.451 791.23" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+</g>
+<path d="M952.69 119.83L1510.77 201.982L998.041 811.287L7.48389 554.554L952.69 119.83Z" stroke-width="2.36817" stroke="black"/>
+<path d="M32.041 561.28C28.0625 570.918 24.1077 580.533 20.1292 590.172C20.0344 591.806 18.5425 593.037 16.9085 592.895C15.2507 592.753 14.043 591.237 14.2561 589.627C12.3379 577.928 10.4197 566.23 8.50146 554.531" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+<path d="M975.021 812.732L985.583 836.295C985.536 837.219 986.554 838.048 987.786 838.142C989.041 838.237 990.083 837.527 990.036 836.603C992.404 830.28 994.796 823.981 997.164 817.658" stroke-width="2.36817" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<path d="M1511.34 201.2C1508.66 210.057 1505.96 218.937 1503.29 227.794C1503 228.789 1502.29 229.594 1501.42 229.76C1500.14 230.02 1498.53 228.978 1498.22 227.179C1497.82 223.958 1497.39 220.761 1496.99 217.54" stroke-width="2.36817" stroke-miterlimit="10" stroke="black"/>
+</svg>
