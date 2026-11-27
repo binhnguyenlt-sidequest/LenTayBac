@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Lên Tây Bắc</title>
+        <link rel="stylesheet" href="styles.css"> 
+        
+        <!-- link to google font--> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Pinyon+Script&display=swap" rel="stylesheet">
+
+        <!-- use javascript for letter steps-->
+        <script src="script.js" defer></script>
+
+    </head>
+
+    <body>
+        <main class="scroll-canvas">
+
+            <!-- SECTION 1: HERO SECTION -->
+            <section class="story-section section-hero" id="hero">
+            <!-- Moving vectors (z-index: 2) and interactive text/postcard (z-index: 3) go here -->
+    
+
+            <!-- Main Banner + "Lên Tây Bắc" SVG (Exported together or layered) -->
+            <img src="Assets /Section 1/title.svg" alt="Lên Tây Bắc" class="hero-title layer-interactive fade-enter">
+
+            <!-- 4 Corner Clouds (Layer 2: Motion) -->
+            <img src="Assets /Section 1/hero-clouds-top-left.svg" alt="" class="layer-motion cloud cloud-tl">
+            <img src="Assets /Section 1/hero-clouds-top-right.svg" alt="" class="layer-motion cloud cloud-tr">
+            <img src="Assets /Section 1/hero-clouds-bottom-left.svg" alt="" class="layer-motion cloud cloud-bl">
+            <img src="Assets /Section 1/hero-clouds-bottom-right.svg" alt="" class="layer-motion cloud cloud-br">
+                </section>
+     
+            <!-- SECTION 2.1: TEXT TRANSITION -->
+            <section class="story-section section-deothamtham" id="deothamtham">
+             <div class="intro-transition-stage layer-interactive">
+
+            <!-- Beat 1: Author Credit (Fades in -> pauses to read -> fades out) -->
+            <div class="author-intro-credit">
+            <p class="author-label">Trích chùm thơ</p>
+            <p class="author-name">Nguyễn An Bình</p>
+            </div>
+
+            <!-- Beat 2: Opening Poem Verse (Fades in right after author fades out) -->
+            <p class="transition-verse">
+            Đường lên Tây Bắc
+            <span class="verse-highlight">
+              <span class="verse-highlight-label">đèo thăm thẳm</span>
+              <svg class="verse-highlight-curve" viewBox="0 0 1000 280" aria-hidden="true" focusable="false">
+                <defs>
+                  <path id="verse-highlight-arc" d="M 20 165 C 250 165 335 85 500 85 C 665 85 750 165 980 165" />
+                </defs>
+                <text font-size="160" text-anchor="middle">
+                  <textPath href="#verse-highlight-arc" startOffset="50%" textLength="900" lengthAdjust="spacingAndGlyphs">đèo thăm thẳm</textPath>
+                </text>
+              </svg>
+            </span>
+            </p>
+        </div>
+
+            </section>
+
+            <!-- SECTION 2.2: MULTI-STEP LETTERS  -->
+            <section class="story-section section-letter" id="letter">
+            <!-- Sweeping Blue Ribbon (Layer 2) -->
+            <img id="blue-ribbon" src="Assets /Section 2/blue-ribbon.svg" alt="" class="layer-motion blue-ribbon">
+
+            <!-- Multi-Step Interactive Envelope Stage (data-step changes 0 -> 6 on each click) -->
+            <div class="envelope-stage layer-interactive" id="envelope-stage" data-step="0">
+
+            <!-- Music Stamp (Always clickable separately to toggle music) -->
+            <button type="button" id="music-stamp-btn" class="music-stamp" title="Play background music" aria-label="Play background music" aria-pressed="false">
+            <img src="Assets /Section 2/stamp-music.svg" alt="Music Stamp"> 
+            <span class="music-note">♪</span>
+            </button>
+            <audio id="background-music" src="back-track.mp3" loop preload="none"></audio>
+
+            <!-- Clickable Envelope + Photo Stack -->
+            <div class="envelope-click-area" id="envelope-click-area" title="Click to continue">
+        
+            <!-- Step 0: Front -->
+            <img src="Assets /Section 2/envelope-front.svg" alt="" class="env-layer env-front">
+        
+            <!-- Step 1: Back Closed -->
+            <img src="Assets /Section 2/envelope-back-closed.svg" alt="" class="env-layer env-back-closed">
+        
+            <!-- Step 2+: Back Open -->
+            <img src="Assets /Section 2/envelope-back-open.svg" alt="" class="env-layer env-back-open">
+
+            <!-- Step 3, 4, 5: Stacked Photo Cards popping out of the open envelope -->
+            <img src="Assets /Section 2/card-1-luong-son.svg" alt="Lương Sơn" class="photo-card card-1">
+            <img src="Assets /Section 2/card-2-doc-cun.svg" alt="Dốc Cun" class="photo-card card-2">
+            <img src="Assets /Section 2/card-3-thung-khe.svg" alt="Đèo Thung Khe" class="photo-card card-3">
+
+            </div>
+
+            <!-- Matching Poem Lines (Fade in/out with each photo card!) -->
+            <div class="envelope-poems">
+            <p class="env-poem-line line-1">Qua Lương Sơn xanh biếc núi rừng</p>
+            <p class="env-poem-line line-2">Leo Dốc Cun triền cao vực hiểm</p>
+            <p class="env-poem-line line-3">Đèo Thung Khe mấy chặng mù sương.</p>
+            </div>
+            <!-- Tiny subtle hint for the user -->
+            <p class="click-hint" id="click-hint">Chạm vào để mở</p>
+            </div>
+
+            </section>
+
+
+            <!-- SECTION 3.1: MOUNTAIN INTERACTIVE -->
+            <section class="story-section section-corn" id="corn">
+            <div class="corn-postcard">
+                <img id="section3-image" src="Assets /Section 3/section3-images.svg" alt="Doi da trang">
+
+                <!-- 4. Poem Line ("Em thấy gì trên đồi đá trắng") -->
+                <div class="corn-verse-curve layer-interactive">
+                <svg viewBox="0 0 600 120" class="corn-curve-svg">
+                    <!-- Invisible arc matching the bottom curve of the blue/white strip -->
+                    <path id="white-hill-arc" d="M 90,38 Q 300,88 510,36" fill="transparent" />
+
+                    <!-- Real selectable poem text riding along that curve -->
+                    <text class="corn-curve-text">
+                    <textPath href="#white-hill-arc" startOffset="50%" text-anchor="middle">
+                        Em thấy gì trên đồi đá trắng
+                    </textPath>
+                    </text>
+                </svg>
+                </div>
+            </div>
+
+            <img src="Assets /Section 3/blue-pass-strip.svg" alt="" class="layer-motion blue-strip-run">
+            <!-- Left Cloud + Branch -->
+            <div class="pass-side-wrap pass-left-enter layer-motion">
+            <img src="Assets /Section 3/pass-side-left.svg" alt="" class="pass-side-float-left">
+            </div>
+            <!-- Right Cloud + Branch -->
+            <div class="pass-side-wrap pass-right-enter layer-motion">
+            <img src="Assets /Section 3/pass-side-right.svg" alt="" class="pass-side-float-right">
+            </div>
+            <img src="Assets /Section 3/pink-smoke-strips.svg" alt="" class="layer-motion pink-strips-fall">
+
+            <!-- SECTION 3.2: DRAGABLE CORNS AND SMOKES  -->
+            <div class="corn-grill-scene">
+            <img src="Assets /Section 3/pink-smoke-left.svg" alt="" class="layer-motion corn-smoke-left">
+            <img src="Assets /Section 3/pink-smoke-right.svg" alt="" class="layer-motion corn-smoke-right">
+
+            <div class="corn-grill-stage">
+            <img src="Assets /Section 3/corn-grill.svg" alt="Ngô nướng Tây Bắc" class="corn-grill-img">
+            <img src="Assets /Section 3/corn-1.svg" alt="Ngô nướng 1" class="draggable-corn corn-1" draggable="false">
+            <img src="Assets /Section 3/corn-2.svg" alt="Ngô nướng 2" class="draggable-corn corn-2" draggable="false">
+            <img src="Assets /Section 3/corn-3.svg" alt="Ngô nướng 3" class="draggable-corn corn-3" draggable="false">
+            </div>
+
+            <div class="corn-stanza layer-interactive">
+            <p class="corn-line-1">Thơm mùi ngô nướng...</p>
+            <p class="corn-line-2">quán ven đường</p>
+            </div>
+            </div>
+
+        </section>
+
+            <!-- SECTION 4: WILD ORCHID BRANCHES & PETALS -->
+            <section class="story-section section-orchid" id="orchid">
+            <img src="Assets /Section 4/branch-top-left.svg" alt="" class="layer-motion branch-tl">
+            <div class="orchid-petals-stage">
+            <img src="Assets /Section 4/petal-1.svg" alt="" class="orchid-petal-layer petal-1">
+            <img src="Assets /Section 4/petal-2.svg" alt="" class="orchid-petal-layer petal-2">
+            <img src="Assets /Section 4/petal-3.svg" alt="" class="orchid-petal-layer petal-3">
+            <img src="Assets /Section 4/petal-4.svg" alt="" class="orchid-petal-layer petal-4">
+            <img src="Assets /Section 4/petal-5.svg" alt="" class="orchid-petal-layer petal-5">
+            <img src="Assets /Section 4/petal-6.svg" alt="" class="orchid-petal-layer petal-6">
+            <img src="Assets /Section 4/petal-7.svg" alt="" class="orchid-petal-layer petal-7">
+
+            <!-- Invisible clickable hit-zones over each of the 7 petals -->
+            <button type="button" class="petal-hit hit-1" data-target="petal-1" aria-label="Cánh hoa 1"></button>
+            <button type="button" class="petal-hit hit-2" data-target="petal-2" aria-label="Cánh hoa 2"></button>
+            <button type="button" class="petal-hit hit-3" data-target="petal-3" aria-label="Cánh hoa 3"></button>
+            <button type="button" class="petal-hit hit-4" data-target="petal-4" aria-label="Cánh hoa 4"></button>
+            <button type="button" class="petal-hit hit-5" data-target="petal-5" aria-label="Cánh hoa 5"></button>
+            <button type="button" class="petal-hit hit-6" data-target="petal-6" aria-label="Cánh hoa 6"></button>
+            <button type="button" class="petal-hit hit-7" data-target="petal-7" aria-label="Cánh hoa 7"></button>
+            </div>
+        <!-- 3. Middle Verse ("Phong lan ngóng núi không buồn nở") -->
+        <p class="orchid-verse-mid layer-interactive">
+            Phong lan ngóng núi <span class="bloom-trigger" id="bloom-trigger" title="Chạm để hoa nở">không buồn nở</span>
+        </p>
+
+        <img src="Assets /Section 4/branch-bottom-right.png" alt="" class="layer-motion branch-br" id="branch-br">
+
+      <!-- 5. Bottom Diagonal Stanza ("Mai xuôi theo người / nỗi nhớ thương?") -->
+        <div class="orchid-stanza-bottom layer-interactive">
+            <p class="orchid-line-1" role="button" tabindex="0" aria-label="Mai xuôi theo người">Mai xuôi theo người</p>
+            <p class="orchid-line-2" role="button" tabindex="0" aria-label="nỗi nhớ thương?">nỗi nhớ thương?</p>
+        </div>
+
+</section>
+
+            <!-- SECTION 5: BẢN LÁC VILLAGE & INTERACTIVE SMOKE STRIPS -->
+            <section class="story-section section-village" id="village" style="--village-progress: 0;">
+
+            <img src="Assets /Section 5/village-houses.svg" alt="Bản Lác Tây Bắc" class="village-houses-img layer-interactive">
+
+            <!-- 2. Left Blue Smoke Strip (Scrolls inward + clears away under cursor) -->
+            <div class="village-strip-wrap village-left-scroll smoke-dispersable">
+                <img src="Assets /Section 5/smoke-strip-left.svg" alt="" class="village-strip-float-left">
+            </div>
+
+            <!-- 3. Right Blue Smoke Strip (Scrolls inward + clears away under cursor) -->
+            <div class="village-strip-wrap village-right-scroll smoke-dispersable">
+                <img src="Assets /Section 5/smoke-strip-right.svg" alt="" class="village-strip-float-right">
+            </div>
+
+            <!-- 4. Poem Couple -->
+            <div class="village-stanza layer-interactive">
+                <p class="village-line-1">Chân đồi ai đốt chiều lên khói</p>
+                <p class="village-line-2">Bản Lác thơm lừng cơm nếp xôi</p>
+            </div>
+
+            </section>
+            <!-- SECTION 6: FIVE-COLOR STICKY RICE (XÔI NGŨ SẮC -->
+            <section class="story-section section-xoi" id="xoi">
+
+            <!-- 1. Sweeping Pink Steam Strips (Appears horizontally on scroll + floats softly) -->
+            <div class="xoi-steam-wrap layer-motion">
+                <img src="Assets /Section 6/pink-steam-strips.svg" alt="" class="xoi-steam-img">
+            </div>
+
+            <!-- 2. Interactive Sticky Rice Basket (Click to unwrap: 0 -> 5) -->
+            <div class="xoi-stage layer-interactive" id="xoi-stage" data-step="0" title="Chạm để mở lá xôi">
+                <img src="Assets /Section 6/xoi-step-0.svg" alt="Ép xôi đóng lá" class="xoi-frame frame-0">
+                <img src="Assets /Section 6/xoi-step-1.svg" alt="Ép xôi hé mở 1" class="xoi-frame frame-1">
+                <img src="Assets /Section 6/xoi-step-2.svg" alt="Ép xôi hé mở 2" class="xoi-frame frame-2">
+                <img src="Assets /Section 6/xoi-step-3.svg" alt="Ép xôi hé mở 3" class="xoi-frame frame-3">
+                <img src="Assets /Section 6/xoi-step-4.svg" alt="Ép xôi hé mở 4" class="xoi-frame frame-4">
+                <img src="Assets /Section 6/xoi-step-5.svg" alt="Xôi ngũ sắc Tây Bắc" class="xoi-frame frame-5">
+
+                <p class="click-hint xoi-hint" id="xoi-hint">Chạm vào giỏ xôi để mở lá</p>
+            </div>
+
+            </section>
+            <!-- SECTION 7: CAMPFIRE & MÚA XÒE DANCE -->
+            <section class="story-section section-campfire" id="campfire">
+
+            <div class="xoe-arch-wrap layer-interactive">
+                <svg viewBox="0 0 700 160" class="xoe-arch-svg">
+                <path id="xoe-curve-path" d="M 90,120 Q 350,25 610,120" fill="transparent" />
+
+                <text class="xoe-arch-text">
+                    <textPath id="xoe-left-tp" href="#xoe-curve-path" startOffset="50%" text-anchor="end">
+                    Mê gái Thái
+                    </textPath>
+                </text>
+                <text class="xoe-arch-text">
+                    <textPath id="xoe-right-tp" href="#xoe-curve-path" startOffset="50%" text-anchor="start">
+                    múa xòe đêm hội
+                    </textPath>
+                </text>
+                </svg>
+
+            </div>
+            <img src="Assets /Section 7/green-ribbon.svg" alt="" class="layer-motion xoe-green-ribbon"> 
+            <div class="thai-girls-stage layer-interactive">
+                <img src="Assets /Section 7/thai-girl-1.png" alt="" class="thai-girl-item girl-1">
+                <img src="Assets /Section 7/thai-girl-2.png" alt="Múa xòe Thái" class="thai-girl-item girl-2">
+                <img src="Assets /Section 7/thai-girl-3.png" alt="" class="thai-girl-item girl-3">
+            </div>
+
+            <div class="campfire-wrap layer-interactive" title="Chạm vào bếp lửa hồng">
+                <img src="Assets /Section 7/campfire.svg" alt="Bếp lửa hồng" class="campfire-img">
+            </div>
+
+            <div class="campfire-stanza layer-interactive">
+                <p class="fire-line-1">Bếp lửa hồng</p>
+                <p class="fire-line-2">đỏ rực mùa vui.</p>
+            </div>
+            </section>
+
+
+            <!-- SECTION 8: DYED BROCADE FABRIC (ÁO THỔ CẨM) -->
+            <section class="story-section section-fabric" id="fabric">
+            <div class="fabric-rack-stage">
+                <img src="Assets /Section 8/fabric-base.svg" alt="Khung dệt thổ cẩm" class="fabric-base-img">
+                <img src="Assets /Section 8/fabric-top.png" alt="" class="layer-motion fabric-top-img">
+            </div>
+
+            <!-- Left Side: Poem Lines (Brisk ease-in entrance) -->
+            <div class="fabric-stanza layer-interactive">
+                <p class="fabric-line-1">Áo thổ cẩm</p>
+                <p class="fabric-line-2">còn tươi nét chỉ</p>
+            </div>
+
+            </section>
+
+            <!-- SECTION 9: CAO PHONG ORANGES (CAM CAO PHONG) -->
+            <section class="story-section section-orange" id="orange">
+
+            <!-- 2. Scattered Drifting Leaves -->
+            <img src="Assets /Section 9/orange-leaves.svg" alt="" class="layer-motion orange-leaves-img">
+
+            <div class="orange-tree-stage">
+                <!-- 1. Left Orange Tree Branch (Swings from left edge) -->
+                <img src="Assets /Section 9/orange-branch.svg" alt="" class="layer-motion orange-branch-img">
+
+                <div class="orange-fruit-motion">
+                <!-- 3. Clickable Orange (z-index: 3 -> slips BETWEEN basket-back and basket-front!) -->
+                <img src="Assets /Section 9/falling-orange.svg" alt="Cam Cao Phong" class="clickable-orange layer-interactive" id="clickable-orange" title="Chạm để hái cam">
+                </div>
+
+                <!-- 4. Combined Basket Box (Positioned relative to the branch stage) -->
+                <div class="basket-box" id="orange-basket">
+                <!-- Back layer (z-index: 2): Oranges mound + blue strap -->
+                <img src="Assets /Section 9/basket-back.svg" alt="" class="basket-piece basket-back">
+
+                <!-- Front layer (z-index: 4): Woven basket front rim -->
+                <img src="Assets /Section 9/basket-front.svg" alt="Giỏ cam Cao Phong" class="basket-piece basket-front">
+                </div>
+            </div>
+
+            <!-- 5. Poem Couplet ("Cam Cao Phong / đẹp ửng da người") -->
+            <div class="orange-stanza layer-interactive">
+                <p class="orange-line-1">Cam Cao Phong</p>
+                <p class="orange-line-2">đẹp ửng da người</p>
+            </div>
+
+            </section>
+            <!-- SECTION 10: CLOSING CLOUDS, LETTER & SCRIPT FINALE -->
+            <section class="story-section section-ending" id="ending" style="--ending-progress: 0;">
+            <div class="ending-cloud-wrap ending-left-scroll layer-motion">
+                <img src="Assets /Section 10/ending-cloud-left.svg" alt="" class="ending-cloud-float-left">
+            </div>
+            <div class="ending-cloud-wrap ending-right-scroll layer-motion">
+                <img src="Assets /Section 10/ending-cloud-right.svg" alt="" class="ending-cloud-float-right">
+            </div>
+
+            <!-- 3. Open Airmail Envelope + Lined Letter Paper + Stamp -->
+            <div class="ending-letter-stage layer-interactive">
+                <img src="Assets /Section 10/ending-envelope-paper.svg" alt="Thư gửi Tây Bắc" class="ending-envelope-img">
+                <a href="#hero" class="ending-stamp-link" aria-label="Về đầu trang" title="Quay lại đầu trang">
+                <img src="Assets /Section 10/ending-stamp.svg" alt="" class="ending-stamp-img">
+                </a>
+
+                <div class="pink-note-stage" id="pink-note-stage" data-open="false" role="button" tabindex="0" title="Chạm để mở mảnh giấy hồng">
+                <img src="Assets /Section 10/pink-note-folded.svg" alt="Mảnh giấy gấp" class="pink-note-layer note-folded">
+                <img src="Assets /Section 10/pink-note-open.svg" alt="Mảnh giấy mở" class="pink-note-layer note-open">
+                </div>
+
+                <!-- Handwritten Poem Lines (Unveil left-to-right like writing!) -->
+                <div class="ending-script-lines">
+                <p class="script-write-1">Em có mơ cùng ta leo dốc</p>
+                <p class="script-write-2">Lên hang Chiều ngắm vạt mây trôi?</p>
+                </div>
+            </div>
+
+            <!-- 4. Closing Calligraphic Finale ("- The end -") -->
+            <div class="the-end-wrap layer-interactive">
+                <p class="the-end-text"> <span class="the-end-script">-The end-</span> </p>
+            </div>
+
+            </section>
+
+        </main>
+
+    </body>
+</html>
